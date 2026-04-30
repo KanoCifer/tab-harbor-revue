@@ -1,0 +1,299 @@
+<script
+  setup
+  lang="ts"
+>
+import { computed, ref, watch } from 'vue';
+import SavedPanel from '@/components/drawer/SavedPanel.vue';
+import TodoPanel from '@/components/drawer/TodoPanel.vue';
+
+const props = defineProps<{
+  open: boolean
+  initialTab?: 'saved' | 'todos'
+}>();
+
+const emit = defineEmits<{
+  close: []
+}>();
+
+const activeTab = ref(props.initialTab || 'saved');
+
+watch(() => props.initialTab, (val) => {
+  if (val) activeTab.value = val;
+});
+
+function close() {
+  emit('close');
+}
+
+// 计算指示器的位置
+const indicatorStyle = computed(() => {
+  return {
+    transform: activeTab.value === 'saved' ? 'translateX(0)' : 'translateX(40px)',
+  };
+});
+</script>
+
+<template>
+  <Transition name="drawer">
+    <div
+      v-if="open"
+      class="drawer-panel"
+    >
+      <div
+        class="drawer-backdrop"
+        @click="close"
+      />
+      <div class="drawer-content">
+        <div class="drawer-header">
+          <div class="drawer-tabs">
+            <div
+              class="tab-indicator"
+              :style="indicatorStyle"
+            />
+            <button
+              class="drawer-tab"
+              :class="{ 'drawer-tab--active': activeTab === 'saved' }"
+              aria-label="Saved pages"
+              @click="activeTab = 'saved'"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+              </svg>
+            </button>
+            <button
+              class="drawer-tab"
+              :class="{ 'drawer-tab--active': activeTab === 'todos' }"
+              aria-label="Todos"
+              @click="activeTab = 'todos'"
+            >
+              <svg
+                viewBox="0 0 16 16"
+                fill="none"
+              >
+                <path
+                  d="M13.5 4.5L6.5 11.5L3 8"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+          <button
+            class="drawer-close"
+            aria-label="Close"
+            @click="close"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M18 6L6 18M6 6l12 12"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+        <div class="drawer-body">
+          <SavedPanel v-if="activeTab === 'saved'" />
+          <TodoPanel v-else />
+        </div>
+      </div>
+    </div>
+  </Transition>
+</template>
+
+<style
+  scoped
+  lang="scss"
+>
+.drawer-panel {
+  position:        fixed;
+  z-index:         100;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  padding:         var(--space-6);
+  pointer-events:  none;
+  inset:           0;
+
+  .drawer-backdrop {
+    position:        absolute;
+    pointer-events:  auto;
+    background:      rgba(0, 0, 0, 0.3);
+    inset:           0;
+    backdrop-filter: blur(4px);
+  }
+
+  .drawer-content {
+    position:        relative;
+    z-index:         1;
+    display:         flex;
+    overflow:        hidden;
+    flex-direction:  column;
+    width:           560px;
+    max-width:       100%;
+    height:          100%;
+    min-height:      400px;
+    max-height:      calc(100vh - 48px);
+    pointer-events:  auto;
+    border-radius:   var(--radius-lg);
+    //background: color-mix(in srgb, var(--theme-c-card-bg-2), transparent 100%);
+    background:      var(--theme-c-card-bg-2);
+    box-shadow:      var(--shadow-lg);
+    backdrop-filter: blur(10px);
+  }
+
+  // 大屏幕：右侧圆角浮窗
+  @media screen and (min-width: 920px) {
+    align-items:     flex-start;
+    justify-content: flex-end;
+    // GroupNav + spacing + extra
+    padding:         calc(30px + var(--space-6) + var(--space-6)) var(--space-8) 0 0;
+
+    .drawer-backdrop {
+      display: none;
+    }
+
+    .drawer-content {
+      width:         720px;
+      max-width:     45%;
+      max-height:    calc(100vh - 60px - var(--space-6) * 3); // 减去顶部导航和间距
+      margin-top:    0;
+      border-radius: var(--radius-lg);
+    }
+  }
+}
+
+.drawer-header {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  padding:         var(--space-3) var(--space-6);
+  border-bottom:   1px solid var(--theme-c-border);
+}
+
+.drawer-tabs {
+  position:      relative;
+  display:       flex;
+  padding:       var(--space-1);
+  border-radius: 99px;
+  background:    var(--theme-c-card-bg);
+  gap:           var(--space-2);
+}
+
+.tab-indicator {
+  position:      absolute;
+  z-index:       0;
+  left:          var(--space-1);
+  width:         32px;
+  height:        32px;
+  transition:    transform var(--transition-base);
+  //transform: translateY(-50%);
+  border-radius: 50%;
+  background:    var(--theme-c-accent);
+  box-shadow:    var(--shadow-sm);
+}
+
+.drawer-tab {
+  position:        relative;
+  z-index:         1;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  width:           32px;
+  height:          32px;
+  cursor:          pointer;
+  transition:      color var(--transition-fast);
+  color:           var(--theme-c-text-muted);
+  border:          none;
+  border-radius:   50%;
+  background:      transparent;
+}
+
+.drawer-tab svg {
+  width:  16px;
+  height: 16px;
+}
+
+.drawer-tab:hover {
+  color: var(--theme-c-text);
+}
+
+.drawer-tab--active {
+  color: white;
+}
+
+.drawer-close {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  width:           36px;
+  height:          36px;
+  transition:      all var(--transition-fast);
+  color:           var(--theme-c-text-muted);
+  border-radius:   9999px;
+}
+
+.drawer-close:hover {
+  color:      var(--theme-c-text);
+  background: color-mix(in srgb, var(--theme-c-text-muted), transparent 50%);
+}
+
+.drawer-close svg {
+  width:  20px;
+  height: 20px;
+}
+
+.drawer-body {
+  overflow-y: auto;
+  flex:       1;
+  padding:    var(--space-6);
+}
+
+// Drawer 过渡动画
+.drawer-enter-active,
+.drawer-leave-active {
+  transition: opacity var(--transition-base);
+}
+
+.drawer-enter-from,
+.drawer-leave-to {
+  opacity: 0;
+}
+
+.drawer-enter-active .drawer-content,
+.drawer-leave-active .drawer-content {
+  transition: transform var(--transition-base), opacity var(--transition-base);
+}
+
+.drawer-enter-from .drawer-content,
+.drawer-leave-to .drawer-content {
+  transform: scale(0.95) translateY(20px);
+  opacity:   0;
+}
+
+// 大屏幕时的动画（从右侧滑入）
+@media screen and (min-width: 920px) {
+  .drawer-enter-active .drawer-content,
+  .drawer-leave-active .drawer-content {
+    transition: transform var(--transition-base);
+  }
+
+  .drawer-enter-from .drawer-content,
+  .drawer-leave-to .drawer-content {
+    transform: translateX(100%);
+    opacity:   1;
+  }
+}
+</style>

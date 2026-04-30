@@ -1,0 +1,296 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import AddLinkForm from './AddLinkForm.vue';
+import { getFaviconUrl, getInitial, getRandomColor } from '@/utils/helpers';
+
+interface QuickLink {
+  id: string;
+  title: string;
+  url: string;
+  favicon?: string;
+}
+
+const props = defineProps<{
+  showTitle?: boolean
+}>();
+
+const STORAGE_KEY = 'quick-links';
+
+// 默认链接
+const defaultLinks: QuickLink[] = [
+  { id: '1', title: 'GitHub', url: 'https://github.com' },
+  { id: '2', title: 'Google', url: 'https://google.com' },
+  { id: '3', title: 'YouTube', url: 'https://youtube.com' },
+];
+
+const links = ref<QuickLink[]>([]);
+const addLinkFormRef = ref<InstanceType<typeof AddLinkForm>>();
+const imageErrors = ref<Record<string, boolean>>({});
+
+// 从 localStorage 加载链接
+function loadLinks() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      links.value = JSON.parse(saved);
+    } else {
+      links.value = defaultLinks;
+      saveLinks();
+    }
+  } catch (error) {
+    console.error('Failed to load quick links:', error);
+    links.value = defaultLinks;
+  }
+}
+
+// 保存链接到 localStorage
+function saveLinks() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(links.value));
+  } catch (error) {
+    console.error('Failed to save quick links:', error);
+  }
+}
+
+// 处理添加链接
+function handleAddLink(title: string, url: string) {
+  let processedUrl = url.trim();
+  if (!processedUrl.startsWith('http://') && !processedUrl.startsWith('https://')) {
+    processedUrl = 'https://' + processedUrl;
+  }
+
+  links.value.push({
+    id: Date.now().toString(),
+    title: title.trim(),
+    url: processedUrl,
+  });
+
+  saveLinks();
+}
+
+// 处理取消
+function handleCancel() {
+  // 表单关闭逻辑已在组件内部处理
+}
+
+// 组件挂载时加载数据
+onMounted(() => {
+  loadLinks();
+});
+
+function removeLink(id: string) {
+  links.value = links.value.filter(link => link.id !== id);
+  delete imageErrors.value[id];
+  saveLinks(); // 保存更改
+}
+
+function handleImageError(linkId: string) {
+  imageErrors.value[linkId] = true;
+}
+
+function openLink(url: string) {
+  window.open(url, '_blank');
+}
+</script>
+
+<template>
+  <div class="quick-links">
+    <h3 v-if="props.showTitle !== false" class="quick-links-title">Quick Links</h3>
+    <div class="links-grid">
+      <div
+        v-for="link in links"
+        :key="link.id"
+        class="link-card"
+        @click="openLink(link.url)"
+      >
+        <div
+          v-if="!imageErrors[link.id]"
+          class="link-icon"
+        >
+          <img
+            :src="getFaviconUrl(link.url)"
+            :alt="link.title"
+            class="link-favicon"
+            @error="handleImageError(link.id)"
+          />
+        </div>
+        <div
+          v-else
+          class="link-icon"
+          :style="{ backgroundColor: getRandomColor(link.title) }"
+        >
+          {{ getInitial(link.title) }}
+        </div>
+        <span class="link-title">{{ link.title }}</span>
+        <button
+          class="link-remove"
+          title="Remove"
+          @click.stop="removeLink(link.id)"
+        >
+          ×
+        </button>
+      </div>
+
+      <button
+        class="link-card link-card--add"
+        @click="addLinkFormRef?.openForm()"
+      >
+        <div class="link-icon link-icon--add">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 5v14M5 12h14" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <span class="link-title">Add Link</span>
+      </button>
+    </div>
+
+    <!-- 添加链接的弹窗 -->
+    <AddLinkForm
+      ref="addLinkFormRef"
+      @submit="handleAddLink"
+      @cancel="handleCancel"
+    />
+  </div>
+</template>
+
+<style scoped lang="scss">
+.quick-links {
+  margin-top: var(--space-6);
+}
+
+.quick-links-title {
+  font-size: 0.875rem;
+  margin-bottom: var(--space-3);
+  text-align: left;
+  color: var(--theme-c-text-muted);
+}
+
+.links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: var(--space-3);
+}
+
+.link-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 8px 0;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: none;
+  gap: var(--space-2);
+}
+
+.link-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  transition: all var(--transition-base);
+  border: none;
+  border-radius: 50%;
+  background: var(--theme-c-card-bg);
+}
+
+.link-card:hover .link-icon {
+  background: var(--theme-c-border);
+}
+
+.link-icon--add {
+  color: var(--theme-c-text-muted);
+}
+
+.link-icon--add svg {
+  width: 24px;
+  height: 24px;
+}
+
+.link-card--add {
+  opacity: 0.7;
+}
+
+.link-card--add:hover {
+  opacity: 1;
+}
+
+.link-favicon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.link-title {
+  font-size: 0.8125rem;
+  text-align: center;
+  word-break: break-word;
+  color: var(--theme-c-text);
+}
+
+.link-remove {
+  font-size: 14px;
+  line-height: 1;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+  opacity: 0;
+  color: var(--error);
+  border: none;
+  border-radius: 50%;
+  background: var(--error-light);
+}
+
+.link-card:hover .link-remove {
+  opacity: 1;
+}
+
+.link-input {
+  font-size: 0.8125rem;
+  width: 100%;
+  padding: var(--space-2);
+  border: 1px solid var(--theme-c-border);
+  border-radius: var(--radius-md);
+  outline: none;
+}
+
+.link-input:focus {
+  border-color: var(--theme-c-accent);
+}
+
+.link-actions {
+  display: flex;
+  margin-top: var(--space-2);
+  gap: var(--space-2);
+}
+
+.link-btn {
+  font-size: 0.75rem;
+  flex: 1;
+  padding: var(--space-2);
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+  border: none;
+  border-radius: var(--radius-md);
+}
+
+.link-btn:hover {
+  opacity: 0.8;
+}
+
+.link-btn--cancel {
+  color: var(--theme-c-text);
+  background: var(--theme-c-border);
+}
+
+.link-btn--save {
+  color: white;
+  background: var(--theme-c-accent);
+}
+</style>
