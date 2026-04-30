@@ -57,7 +57,7 @@ async function openProjectRepo() {
   const [currentTab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
   await chrome.tabs.create({
-    url: 'https://github.com/HarryHello',
+    url: 'https://github.com/HarryHello/tab-harbor-revue',
     index: currentTab.index + 1,
     active: true,
   });
