@@ -158,10 +158,6 @@ function handleOverlayClick(event: MouseEvent) {
   }
 }
 
-.modal-form-body {
-  // Content goes here
-}
-
 .modal-form-actions {
   display:    flex;
   margin-top: var(--space-4);
