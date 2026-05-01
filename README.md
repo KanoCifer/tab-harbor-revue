@@ -22,6 +22,23 @@ Vue 3 + TypeScript 技术栈进行了全面升级，并引入了类似 Google Ma
 
 通过智能的标签页分组、待办事项管理和快捷链接功能，帮助您提升工作效率，保持浏览器的整洁有序。
 
+<table>
+  <tr>
+    <td width="33.33%" valign="top">
+      <strong>统一管理标签页</strong><br><br>
+      <img src="public/screenshots/light.png" alt="Tabs" width="100%">
+    </td>
+    <td width="33.33%" valign="top">
+      <strong>暂存标签页</strong><br><br>
+      <img src="public/screenshots/dark-saved.png" alt="Saved" width="100%">
+    </td>
+    <td width="33.33%" valign="top">
+      <strong>自由添加待办</strong><br><br>
+      <img src="public/screenshots/dark-todos.png" alt="Todos" width="100%">
+    </td>
+  </tr>
+</table>
+
 ## ✨ 功能特性
 
 ### 📑 智能标签页管理
@@ -189,7 +206,6 @@ tab-harbor-revue/
 
 保存和加载用户偏好：
 
-- 搜索引擎选择（Google、Bing、百度等）
 - 界面显示选项（是否显示图标、动画等）
 - 快捷键配置（开发中）
 - 其他个性化设置
