@@ -166,7 +166,7 @@ function openLink(url: string) {
 <template>
   <div class="quick-links">
     <h3
-      v-if="props.showTitle !== false"
+      v-if="showTitle"
       class="quick-links-title"
     >Quick Links</h3>
     <div class="links-grid">
