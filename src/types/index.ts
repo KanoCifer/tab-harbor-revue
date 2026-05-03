@@ -1,3 +1,3 @@
-export * from './tab'
-export * from './item'
-export * from './theme'
+export * from './tab';
+export * from './item';
+export * from './config';
