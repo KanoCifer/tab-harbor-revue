@@ -66,11 +66,8 @@ const toggle = () => {
     padding:       0;
     transition:    background-color 0.2s ease-in-out;
     border-radius: 99px;
-    background:    var(--theme-c-card-bg);
+    background:    color-mix(in srgb, var(--theme-c-text-muted) 50%, var(--theme-c-card-bg));
 
-    &--active {
-      background: var(--theme-c-accent);
-    }
 
     .switch-handle {
       position:      absolute;
@@ -78,16 +75,26 @@ const toggle = () => {
       left:          $gap-size;
       width:         $handle-size;
       height:        $handle-size;
-      transition:    transform 0.2s ease-in-out;
+      transition:    all 0.2s ease-in-out;
       border-radius: 50%;
       background:    white;
       box-shadow:    var(--shadow-sm);
 
       &--active {
-        transform: translateX(#{$switch-size - $handle-size - $gap-size * 2});
+        left: #{$switch-size - $handle-size - $gap-size};
       }
+
+      &:hover {
+        transform: scale(1.5);
+        opacity:   0.7;
+      }
+    }
+
+    &--active {
+      background: var(--theme-c-accent);
     }
   }
 }
+
 
 </style>
