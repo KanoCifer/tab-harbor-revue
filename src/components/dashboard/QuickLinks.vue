@@ -7,6 +7,7 @@ import AddLinkForm from './AddLinkForm.vue';
 import EditLinkForm from './EditLinkForm.vue';
 import QuickLinkItem from './QuickLinkItem.vue';
 import { handleUrlSecurityCheck } from '@/utils/helpers';
+import AddLinkItem from '@/components/dashboard/AddLinkItem.vue';
 
 interface QuickLink {
   id: string;
@@ -177,26 +178,9 @@ function openLink(url: string) {
         @edit="handleEditLink"
       />
 
-      <button
-        class="link-card link-card--add"
+      <AddLinkItem
         @click="addLinkFormRef?.openForm()"
-      >
-        <div class="link-icon link-icon--add">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M12 5v14M5 12h14"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </div>
-        <span class="link-title">Add Link</span>
-      </button>
+      />
     </div>
 
     <!-- 添加链接的弹窗 -->
@@ -235,42 +219,6 @@ function openLink(url: string) {
   display:               grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap:                   var(--space-3);
-}
-
-.link-card {
-  position:       relative;
-  display:        flex;
-  align-items:    center;
-  flex-direction: column;
-  padding:        8px 0;
-  cursor:         pointer;
-  border:         none;
-  border-radius:  var(--radius-lg);
-  background:     none;
-  gap:            var(--space-2);
-}
-
-.link-icon--add svg {
-  width:  24px;
-  height: 24px;
-}
-
-.link-card--add {
-  position:       relative;
-  display:        flex;
-  align-items:    center;
-  flex-direction: column;
-  padding:        8px 0;
-  cursor:         pointer;
-  border:         none;
-  border-radius:  var(--radius-lg);
-  background:     none;
-  gap:            var(--space-2);
-  opacity: 0.7;
-}
-
-.link-card--add:hover {
-  opacity: 1;
 }
 
 .link-input {

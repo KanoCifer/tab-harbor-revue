@@ -4,6 +4,7 @@
 >
 import { ref } from 'vue';
 import { getFaviconUrl, getInitial, getRandomColor } from '@/utils/helpers';
+import QuickLinkFrame from '@/components/dashboard/QuickLinkFrame.vue';
 
 interface QuickLink {
   id: string;
@@ -26,8 +27,7 @@ function handleClick() {
   emit('click', props.link.url);
 }
 
-function handleEdit(event: Event) {
-  event.stopPropagation();
+function handleEdit() {
   emit('edit', props.link);
 }
 
@@ -37,14 +37,12 @@ function handleImageError() {
 </script>
 
 <template>
-  <div
-    class="link-card"
-    @click="handleClick"
+  <QuickLinkFrame
+    :title="link.title"
+    @click_icon="handleClick"
+    @edit_link="handleEdit"
   >
-    <div
-      v-if="!imageError"
-      class="link-icon"
-    >
+    <div v-if="!imageError">
       <img
         :src="getFaviconUrl(link.url)"
         :alt="link.title"
@@ -52,10 +50,7 @@ function handleImageError() {
         @error="handleImageError"
       />
     </div>
-    <div
-      v-else
-      class="link-icon"
-    >
+    <div v-else>
       <div
         class="link-avatar"
         :style="{ backgroundColor: getRandomColor(link.url) }"
@@ -63,69 +58,13 @@ function handleImageError() {
         {{ getInitial(link.title) }}
       </div>
     </div>
-    <span class="link-title">{{ link.title }}</span>
-    <button
-      class="link-edit"
-      title="Edit"
-      @click="handleEdit"
-    >
-      <svg
-        viewBox="0 0 24 24"
-        fill="currentColor"
-      >
-        <circle
-          cx="12"
-          cy="5"
-          r="2"
-        />
-        <circle
-          cx="12"
-          cy="12"
-          r="2"
-        />
-        <circle
-          cx="12"
-          cy="19"
-          r="2"
-        />
-      </svg>
-    </button>
-  </div>
+  </QuickLinkFrame>
 </template>
 
 <style
   scoped
   lang="scss"
 >
-.link-card {
-  position:       relative;
-  display:        flex;
-  align-items:    center;
-  flex-direction: column;
-  padding:        8px 0;
-  cursor:         pointer;
-  border:         none;
-  border-radius:  var(--radius-lg);
-  background:     none;
-  gap:            var(--space-2);
-}
-
-.link-icon {
-  display:         flex;
-  align-items:     center;
-  justify-content: center;
-  width:           48px;
-  height:          48px;
-  transition:      all var(--transition-base);
-  border:          none;
-  border-radius:   50%;
-  background:      var(--theme-c-card-bg);
-}
-
-.link-card:hover .link-icon {
-  background: var(--theme-c-border);
-}
-
 .link-favicon {
   width:      28px;
   height:     28px;
@@ -144,45 +83,5 @@ function handleImageError() {
   text-transform:  uppercase;
   color:           white;
   border-radius:   50%;
-}
-
-.link-title {
-  font-size:  0.8125rem;
-  text-align: center;
-  word-break: break-word;
-  color:      var(--theme-c-text);
-}
-
-.link-edit {
-  font-size:       14px;
-  line-height:     1;
-  position:        absolute;
-  top:             4px;
-  right:           4px;
-  display:         flex;
-  align-items:     center;
-  justify-content: center;
-  width:           18px;
-  height:          18px;
-  cursor:          pointer;
-  transition:      opacity var(--transition-fast);
-  opacity:         0;
-  color:           var(--theme-c-text-muted);
-  border:          none;
-  border-radius:   50%;
-  background:      transparent;
-
-  svg {
-    width:  14px;
-    height: 14px;
-  }
-
-  &:hover {
-    background: color-mix(in srgb, var(--theme-c-border) 50%, transparent);
-  }
-}
-
-.link-card:hover .link-edit {
-  opacity: 1;
 }
 </style>
