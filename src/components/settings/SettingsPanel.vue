@@ -7,6 +7,7 @@ import { type ThemeId, useThemeStore } from '@/stores/theme';
 import ModalForm from '@/components/common/ModalForm.vue';
 import Switch from '@/components/common/Switch.vue';
 import { useSettingsStore } from '@/stores/settings';
+import { exportConfigs, importConfigs } from '@/utils/configs';
 
 const props = defineProps<{
   modelValue: boolean
@@ -53,6 +54,14 @@ function closeSettings() {
 }
 
 const settingsStore = useSettingsStore();
+
+const handleExportConfigs = () => {
+  exportConfigs();
+};
+
+const handleImportConfigs = () => {
+  importConfigs();
+};
 </script>
 
 <template>
@@ -88,6 +97,17 @@ const settingsStore = useSettingsStore();
             @update:model-value="settingsStore.updateSetting('doShowRgbCircle', $event)"
           />
           <label class="switcher-label">RGB Ring</label>
+        </div>
+      </section>
+      <section class="settings-section settings-section--configs">
+        <h3 class="section-title">Config File</h3>
+        <div class="config-operations">
+          <button class="btn btn--export-export" @click="handleExportConfigs">
+            <span class="button-label">Export</span>
+          </button>
+          <button class="btn btn--import-config" @click="handleImportConfigs">
+            <span class="button-label">Import</span>
+          </button>
         </div>
       </section>
     </div>
@@ -177,10 +197,43 @@ const settingsStore = useSettingsStore();
   color:        var(--theme-c-text);
 }
 
+.button-label,
 .switcher-label {
-  font-size:   1rem;
   font-weight: 600;
   user-select: none;
   color:       var(--theme-c-text);
 }
+
+.switcher-label {
+  font-size: 1rem;
+}
+
+.button-label {
+  font-size: 0.875rem;
+}
+
+.config-operations {
+  font-family: var(--font-display);
+  display:     flex;
+  color:       var(--theme-c-text);
+  gap:         var(--space-3);
+
+  .btn {
+    padding:       var(--space-2) var(--space-3);
+    cursor:        pointer;
+    transition:    all var(--transition-base);
+    border:        1px solid var(--theme-c-border);
+    border-radius: 9999px;
+    background:    var(--theme-c-card-bg);
+
+    &:hover {
+      border-color: var(--theme-c-text-muted);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
+
 </style>

@@ -6,51 +6,24 @@ import { onMounted, ref } from 'vue';
 import AddLinkForm from './AddLinkForm.vue';
 import EditLinkForm from './EditLinkForm.vue';
 import QuickLinkItem from './QuickLinkItem.vue';
-import { handleUrlSecurityCheck } from '@/utils/helpers';
 import AddLinkItem from '@/components/dashboard/AddLinkItem.vue';
 import type { QuickLink } from '@/types';
+import { useQuickLinksStore } from '@/stores/items';
 
 const props = defineProps<{
   showTitle?: boolean
 }>();
 
-const STORAGE_KEY = 'quick-links';
+// 使用 QuickLinks store
+const quickLinksStore = useQuickLinksStore();
 
-// 默认链接
-const defaultLinks: QuickLink[] = [
-  { id: '1', title: 'GitHub', url: 'https://github.com' },
-  { id: '2', title: 'Google', url: 'https://google.com' },
-  { id: '3', title: 'YouTube', url: 'https://youtube.com' },
-];
-
-const links = ref<QuickLink[]>([]);
 const addLinkFormRef = ref<InstanceType<typeof AddLinkForm>>();
 const editingLink = ref<QuickLink | null>(null);
 
-// 从 localStorage 加载链接
-function loadLinks() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      links.value = JSON.parse(saved);
-    } else {
-      links.value = defaultLinks;
-      saveLinks();
-    }
-  } catch (error) {
-    console.error('Failed to load quick links:', error);
-    links.value = defaultLinks;
-  }
-}
-
-// 保存链接到 localStorage
-function saveLinks() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(links.value));
-  } catch (error) {
-    console.error('Failed to save quick links:', error);
-  }
-}
+// 组件挂载时加载数据
+onMounted(() => {
+  quickLinksStore.load();
+});
 
 // 处理添加链接
 function handleAddLink(title: string, url: string) {
@@ -64,33 +37,16 @@ function handleAddLink(title: string, url: string) {
     processedUrl = 'https://' + processedUrl;
   }
 
-  // 验证 URL 安全性
-  if (!handleUrlSecurityCheck(processedUrl, 'add')) {
-    return;
+  try {
+    quickLinksStore.add(title.trim(), processedUrl);
+  } catch (error) {
+    console.error('Failed to add link:', error);
   }
-
-  links.value.push({
-    id: Date.now().toString(),
-    title: title.trim(),
-    url: processedUrl,
-  });
-
-  saveLinks();
 }
 
 // 处理取消
 function handleCancel() {
   // 表单关闭逻辑已在组件内部处理
-}
-
-// 组件挂载时加载数据
-onMounted(() => {
-  loadLinks();
-});
-
-function removeLink(id: string) {
-  links.value = links.value.filter(link => link.id !== id);
-  saveLinks(); // 保存更改
 }
 
 function handleLinkClick(url: string) {
@@ -102,25 +58,27 @@ function handleEditLink(link: QuickLink) {
 }
 
 function handleUpdateLink(id: string, title: string, url: string) {
-  // 验证 URL 安全性
-  if (!handleUrlSecurityCheck(url, 'add')) {
-    return;
+  let processedUrl = url.trim();
+
+  // 先检查是否已经有协议头
+  const hasProtocol = /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(processedUrl);
+
+  // 只有没有协议头且不是特殊协议时，才添加 https://
+  if (!hasProtocol) {
+    processedUrl = 'https://' + processedUrl;
   }
 
-  const index = links.value.findIndex(link => link.id === id);
-  if (index !== -1) {
-    links.value[index] = {
-      ...links.value[index],
-      title: title.trim(),
-      url: url.trim(),
-    };
-    saveLinks();
+  try {
+    quickLinksStore.update(id, title.trim(), processedUrl);
+  } catch (error) {
+    console.error('Failed to update link:', error);
   }
+  
   editingLink.value = null;
 }
 
 function handleDeleteFromEdit(id: string) {
-  removeLink(id);
+  quickLinksStore.remove(id);
   editingLink.value = null;
 }
 
@@ -129,11 +87,6 @@ function handleCancelEdit() {
 }
 
 function openLink(url: string) {
-  // 验证 URL 安全性
-  if (!handleUrlSecurityCheck(url, 'open')) {
-    return;
-  }
-
   // 特殊处理 file:// 协议 - 浏览器不允许直接从网页打开本地文件
   if (url.startsWith('file://')) {
     const confirmed = confirm(
@@ -165,7 +118,7 @@ function openLink(url: string) {
     >Quick Links</h3>
     <div class="links-grid">
       <QuickLinkItem
-        v-for="link in links"
+        v-for="link in quickLinksStore.links"
         :key="link.id"
         :link="link"
         @click="handleLinkClick"

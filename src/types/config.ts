@@ -9,25 +9,25 @@ export interface configV1 {
   settings: {
     doShowRgbCircle: boolean,
   },
-  quickLinks: [{
+  quickLinks: Array<{
     id: string,
     title: string,
     url: string,
-  }],
-  deferred: [{
+  }>,
+  deferred: Array<{
     id: string,
     url: string,
     title: string,
     savedAt: string,
     completed: boolean,
     dismissed: boolean,
-  }],
-  todos: [{
+  }>,
+  todos: Array<{
     id: string,
     title: string,
     description?: string,
     createdAt: string,
     completed: boolean,
     dismissed: boolean,
-  }],
+  }>,
 }
