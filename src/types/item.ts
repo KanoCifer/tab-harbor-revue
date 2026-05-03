@@ -27,3 +27,9 @@ export interface Shortcut {
   customIcon?: string
   createdAt: string
 }
+
+export interface QuickLink {
+  id: string
+  title: string
+  url: string
+}

@@ -8,13 +8,7 @@ import EditLinkForm from './EditLinkForm.vue';
 import QuickLinkItem from './QuickLinkItem.vue';
 import { handleUrlSecurityCheck } from '@/utils/helpers';
 import AddLinkItem from '@/components/dashboard/AddLinkItem.vue';
-
-interface QuickLink {
-  id: string;
-  title: string;
-  url: string;
-  favicon?: string;
-}
+import type { QuickLink } from '@/types';
 
 const props = defineProps<{
   showTitle?: boolean

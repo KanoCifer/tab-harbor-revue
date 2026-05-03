@@ -4,12 +4,7 @@
 >
 import { ref, watch } from 'vue';
 import ModalForm from '@/components/common/ModalForm.vue';
-
-interface QuickLink {
-  id: string;
-  title: string;
-  url: string;
-}
+import type { QuickLink } from '@/types';
 
 const props = defineProps<{
   link: QuickLink | null;

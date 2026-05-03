@@ -5,12 +5,7 @@
 import { ref } from 'vue';
 import { getFaviconUrl, getInitial, getRandomColor } from '@/utils/helpers';
 import QuickLinkFrame from '@/components/dashboard/QuickLinkFrame.vue';
-
-interface QuickLink {
-  id: string;
-  title: string;
-  url: string;
-}
+import type { QuickLink } from '@/types';
 
 const props = defineProps<{
   link: QuickLink;
