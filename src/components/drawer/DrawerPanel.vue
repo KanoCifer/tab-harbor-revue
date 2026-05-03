@@ -5,6 +5,7 @@
 import { computed, ref, watch } from 'vue';
 import SavedPanel from '@/components/drawer/SavedPanel.vue';
 import TodoPanel from '@/components/drawer/TodoPanel.vue';
+import { BookmarkIcon, CheckmarkIcon, CloseIcon } from '@/components/icons';
 
 const props = defineProps<{
   open: boolean
@@ -56,14 +57,7 @@ const indicatorStyle = computed(() => {
               aria-label="Saved pages"
               @click="activeTab = 'saved'"
             >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-              </svg>
+              <BookmarkIcon :size="16" />
             </button>
             <button
               class="drawer-tab"
@@ -71,18 +65,7 @@ const indicatorStyle = computed(() => {
               aria-label="Todos"
               @click="activeTab = 'todos'"
             >
-              <svg
-                viewBox="0 0 16 16"
-                fill="none"
-              >
-                <path
-                  d="M13.5 4.5L6.5 11.5L3 8"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+              <CheckmarkIcon :size="16" />
             </button>
           </div>
           <button
@@ -90,18 +73,7 @@ const indicatorStyle = computed(() => {
             aria-label="Close"
             @click="close"
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                d="M18 6L6 18M6 6l12 12"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+            <CloseIcon :size="20" />
           </button>
         </div>
         <div class="drawer-body">

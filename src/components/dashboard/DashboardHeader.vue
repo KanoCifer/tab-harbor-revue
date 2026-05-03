@@ -6,6 +6,7 @@ import { computed, ref } from 'vue';
 import SearchInput from '@/components/drawer/SearchInput.vue';
 import QuickLinks from './QuickLinks.vue';
 import RGBCircle from '@/components/common/RGBCircle.vue';
+import { ChevronIcon } from '@/components/icons';
 import { useSettingsStore } from '@/stores/settings';
 import { handleUrlSecurityCheck } from '@/utils/helpers';
 
@@ -110,32 +111,10 @@ const settingsStore = useSettingsStore();
           :title="quickLinksCollapsed ? 'Expand Quick Links' : 'Collapse Quick Links'"
           @click.stop="toggleQuickLinks"
         >
-          <svg
-            v-if="!quickLinksCollapsed"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M18 15l-6-6-6 6"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-          <svg
-            v-else
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M6 9l6 6 6-6"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+          <ChevronIcon
+            :direction="quickLinksCollapsed ? 'down' : 'up'"
+            :size="16"
+          />
         </button>
       </div>
       <div

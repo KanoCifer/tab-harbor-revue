@@ -5,6 +5,7 @@
 import { computed } from 'vue';
 import { useTabsStore } from '@/stores';
 import MissionCard from './MissionCard.vue';
+import { WindowIcon } from '@/components/icons';
 
 const props = defineProps<{
   searchQuery: string
@@ -50,39 +51,7 @@ const groups = computed(() => {
       v-if="groups.length === 0"
       class="empty-state"
     >
-      <svg
-        viewBox="0 0 64 64"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-      >
-        <rect
-          x="8"
-          y="12"
-          width="48"
-          height="40"
-          rx="4"
-        />
-        <path d="M8 20h48" />
-        <circle
-          cx="16"
-          cy="16"
-          r="2"
-          fill="currentColor"
-        />
-        <circle
-          cx="24"
-          cy="16"
-          r="2"
-          fill="currentColor"
-        />
-        <circle
-          cx="32"
-          cy="16"
-          r="2"
-          fill="currentColor"
-        />
-      </svg>
+      <WindowIcon :size="80" />
       <h3>All clear!</h3>
       <p>No open tabs. Enjoy the calm.</p>
     </div>

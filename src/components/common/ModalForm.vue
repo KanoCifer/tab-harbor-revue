@@ -3,6 +3,7 @@
   lang="ts"
 >
 import { computed } from 'vue';
+import { CloseIcon } from '@/components/icons';
 
 const props = withDefaults(defineProps<{
   modelValue: boolean;
@@ -58,18 +59,7 @@ function handleOverlayClick(event: MouseEvent) {
               aria-label="Close"
               @click="handleClose"
             >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  d="M18 6L6 18M6 6l12 12"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+              <CloseIcon :size="20" />
             </button>
           </div>
 

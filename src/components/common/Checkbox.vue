@@ -33,15 +33,7 @@ function toggle() {
     :aria-checked="checked"
     @click="toggle"
   >
-    <svg v-if="checked" viewBox="0 0 16 16" fill="none">
-      <path
-        d="M13.5 4.5L6.5 11.5L3 8"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
+    <CheckmarkIcon v-if="checked" :size="12" />
   </button>
 </template>
 

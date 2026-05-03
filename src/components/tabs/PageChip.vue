@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import type { Tab } from '@/types';
 import { useDeferredStore, useTabsStore } from '@/stores';
+import { BookmarkIcon, CloseIcon } from '@/components/icons';
 
 const props = defineProps<{
   tab: Tab
@@ -48,14 +49,10 @@ async function save(e?: Event) {
     <span class="page-chip-title">{{ tab.title || 'Untitled' }}</span>
     <div class="page-chip-actions" :class="{ 'page-chip-actions--visible': showActions }">
       <button class="page-chip-action" title="Save for later" @click="save">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-        </svg>
+        <BookmarkIcon :size="16" />
       </button>
       <button class="page-chip-action page-chip-action--danger" title="Close" @click="close">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M19 5L5 19M5 5l14 14" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+        <CloseIcon :size="16" />
       </button>
     </div>
   </div>

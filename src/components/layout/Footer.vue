@@ -4,6 +4,7 @@
 >
 import { computed } from 'vue';
 import { useTabsStore } from '@/stores';
+import { GridIcon } from '@/components/icons';
 
 const tabsStore = useTabsStore();
 
@@ -14,12 +15,7 @@ const tabCount = computed(() => tabsStore.totalTabCount);
   <footer class="footer">
     <div class="footer-stats">
       <span class="footer-stat">
-        <svg
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6z" />
-        </svg>
+        <GridIcon :size="16" />
         {{ tabCount }} tabs
       </span>
     </div>

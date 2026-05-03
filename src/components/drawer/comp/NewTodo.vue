@@ -3,6 +3,7 @@
   lang="ts"
 >
 import { ref } from 'vue';
+import { AddIcon } from '@/components/icons';
 
 const emit = defineEmits<{
   submit: [title: string, description?: string]
@@ -28,16 +29,7 @@ const cancel = () => {
       :class="showAdd ? 'add-trigger--active' : ''"
       @click="showAdd = !showAdd"
     >
-      <svg
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-          clip-rule="evenodd"
-        />
-      </svg>
+      <AddIcon :size="18" />
       <span>Add Todo</span>
     </div>
     <div
