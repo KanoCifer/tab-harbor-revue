@@ -87,6 +87,15 @@ Vue 3 + TypeScript 技术栈进行了全面升级，并引入了类似 Google Ma
 4. 点击「加载已解压的扩展程序」
 5. 选择解压后的目录即可使用
 
+或是从[chrome应用商店](https://chromewebstore.google.com/detail/tab-harbor-revue/cdeaffenjkejppkffbjjihcpnhpemefp)下载发布版本并自动更新。
+（由于审核或其他原因，商店版本可能略有落后）
+
+### 更新扩展
+
+自`1.0.4`以后，在设置页面提供了导出和导入配置文件的选项。我们建议您在更新前导出配置文件，更新后如有缺失，可选择导入配置文件以覆盖。
+
+暂存和待办的项目会一并导出。谨慎将配置文件发送给他人。
+
 ## 💻 开发指南
 
 ### 环境要求
