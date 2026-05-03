@@ -1,6 +1,6 @@
 import { useThemeStore } from '@/stores/theme';
 import { useSettingsStore } from '@/stores/settings';
-import { useDeferredStore, useTodosStore, useShortcutsStore, useQuickLinksStore } from '@/stores/items';
+import { useDeferredStore, useQuickLinksStore, useShortcutsStore, useTodosStore } from '@/stores/items';
 import type { configV1 } from '@/types/config';
 
 // 获取当前扩展版本（从 manifest.json）
@@ -64,11 +64,11 @@ export async function exportConfigs() {
     const a = document.createElement('a');
     a.href = url;
     a.download = `tab-harbor-config-${getExtensionVersion()}-${Date.now()}.json`;
-    
+
     // 触发下载
     document.body.appendChild(a);
     a.click();
-    
+
     // 清理
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
@@ -132,7 +132,6 @@ export async function importConfigs() {
     const settingsStore = useSettingsStore();
     const deferredStore = useDeferredStore();
     const todosStore = useTodosStore();
-    const shortcutsStore = useShortcutsStore();
     const quickLinksStore = useQuickLinksStore();
 
     // 导入主题设置
@@ -180,7 +179,6 @@ export async function importConfigs() {
     }
 
     console.log('Config imported successfully');
-    alert('✅ Configuration imported successfully!');
   } catch (error) {
     console.error('Failed to import config:', error);
     alert(`❌ Failed to import configuration: ${(error as Error).message}`);

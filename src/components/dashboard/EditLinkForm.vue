@@ -38,11 +38,8 @@ function handleSubmit() {
 
 function handleDelete() {
   if (props.link) {
-    const confirmed = confirm('Are you sure you want to delete this link?');
-    if (confirmed) {
-      emit('delete', props.link.id);
-      showForm.value = false;
-    }
+    emit('delete', props.link.id);
+    showForm.value = false;
   }
 }
 
