@@ -1,16 +1,33 @@
-import { ThemeId } from '@/stores/theme';
-import { Settings } from '@/stores/settings';
-import { DeferredItem, QuickLink, Todo } from '@/types/item';
-
+// 硬编码不同版本的配置项，以防后续版本修改接口影响旧版本配置格式
 export interface configV1 {
   extensionVersion: string,
   configVersion: number,
   exportedAt: number,
   theme: {
-    themeId: ThemeId,
+    themeId: 'light' | 'dark',
   },
-  settings: Settings,
-  quickLinks: [QuickLink],
-  deferred: [DeferredItem],
-  todos: [Todo],
+  settings: {
+    doShowRgbCircle: boolean,
+  },
+  quickLinks: [{
+    id: string,
+    title: string,
+    url: string,
+  }],
+  deferred: [{
+    id: string,
+    url: string,
+    title: string,
+    savedAt: string,
+    completed: boolean,
+    dismissed: boolean,
+  }],
+  todos: [{
+    id: string,
+    title: string,
+    description?: string,
+    createdAt: string,
+    completed: boolean,
+    dismissed: boolean,
+  }],
 }
