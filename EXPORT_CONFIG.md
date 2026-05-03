@@ -37,8 +37,8 @@
 
 ```json
 {
-  "extension-version": "1.0.4",
-  "config-version": "1",
+  "extensionVersion": "1.0.4",
+  "configVersion": 1,
   "exportedAt": "2026-05-03T12:00:00.000Z",
   "theme": {
     "themeId": "light"
@@ -46,22 +46,16 @@
   "settings": {
     "doShowRgbCircle": true
   },
-  "shortcuts": [
+  "quickLinks": [
     {
       "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-      "url": "https://github.com",
       "title": "GitHub",
-      "favIconUrl": "https://github.githubassets.com/favicons/favicon.svg",
-      "emoji": "🐙",
-      "createdAt": "2026-04-15T08:30:00.000Z"
+      "url": "https://github.com"
     },
     {
       "id": "b1c2d3e4-f5a6-7890-abcd-ef1234567890",
-      "url": "https://youtube.com",
       "title": "YouTube",
-      "favIconUrl": "https://www.youtube.com/favicons/favicon.svg",
-      "emoji": "🐙",
-      "createdAt": "2026-04-15T08:30:00.000Z"
+      "url": "https://youtube.com"
     }
   ],
   "deferred": [
@@ -80,7 +74,7 @@
       "title": "完成项目文档",
       "description": "编写导出配置功能的文档说明",
       "createdAt": "2026-05-02T09:15:00.000Z",
-      "completed": false,
+      "completed": true,
       "dismissed": false
     }
   ]
@@ -89,13 +83,13 @@
 
 ### 字段说明
 
-| 字段                  | 类型     | 必填 | 说明                   |
-|---------------------|--------|----|----------------------|
-| `extension-version` | string | 是  | 扩展版本号，用于兼容性判断        |
-| `config-version`    | string | 是  | 配置格式版本号，用于兼容性判断      |
-| `exportedAt`        | string | 是  | 导出时间的 ISO 8601 格式时间戳 |
-| `theme`             | object | 是  | 主题偏好设置               |
-| `settings`          | object | 是  | 用户设置选项               |
-| `shortcuts`         | array  | 是  | 快速链接列表               |
-| `deferred`          | array  | 是  | 暂存的标签页列表，按顺序导出       |
-| `todos`             | array  | 是  | 待办事项列表，按顺序导出         |
+| 字段                 | 类型     | 必填 | 说明                   |
+|--------------------|--------|----|----------------------|
+| `extensionVersion` | string | 是  | 扩展版本号，用于兼容性判断        |
+| `configVersion`    | string | 是  | 配置格式版本号，用于兼容性判断      |
+| `exportedAt`       | string | 是  | 导出时间的 ISO 8601 格式时间戳 |
+| `theme`            | object | 是  | 主题偏好设置               |
+| `settings`         | object | 是  | 用户设置选项               |
+| `shortcuts`        | array  | 是  | 快速链接列表               |
+| `deferred`         | array  | 是  | 暂存的标签页列表，按顺序导出       |
+| `todos`            | array  | 是  | 待办事项列表，按顺序导出         |
