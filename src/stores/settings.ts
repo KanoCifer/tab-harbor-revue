@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-interface Settings {
+export interface Settings {
   doShowRgbCircle: boolean;
 }
 
