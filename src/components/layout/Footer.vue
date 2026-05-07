@@ -2,9 +2,9 @@
   setup
   lang="ts"
 >
-import { computed } from 'vue';
-import { useTabsStore } from '@/stores';
 import { GridIcon } from '@/components/icons';
+import { useTabsStore } from '@/stores';
+import { computed } from 'vue';
 
 const tabsStore = useTabsStore();
 
@@ -28,6 +28,10 @@ const tabCount = computed(() => tabsStore.totalTabCount);
 >
 .footer {
   font-size:       0.8125rem;
+  // position: fixed;
+  // bottom: 0;
+  // left: 0;
+  // right: 0;
   display:         flex;
   align-items:     center;
   justify-content: space-between;

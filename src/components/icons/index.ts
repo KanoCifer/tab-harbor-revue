@@ -11,3 +11,5 @@ export { default as SettingsIcon } from './SettingsIcon.vue';
 export { default as DeleteIcon } from './DeleteIcon.vue';
 export { default as PinIcon } from './PinIcon.vue';
 export { default as MoreIcon } from './MoreIcon.vue';
+export { default as SunIcon } from './SunIcon.vue';
+export { default as MoonIcon } from './MoonIcon.vue';

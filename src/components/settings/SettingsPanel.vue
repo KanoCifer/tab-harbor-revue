@@ -8,6 +8,7 @@ import ModalForm from '@/components/common/ModalForm.vue';
 import Switch from '@/components/common/Switch.vue';
 import { useSettingsStore } from '@/stores/settings';
 import { exportConfigs, importConfigs } from '@/utils/configs';
+import { SunIcon, MoonIcon } from '@/components/icons';
 
 const props = defineProps<{
   modelValue: boolean
@@ -38,15 +39,6 @@ const themes = [
 
 function selectTheme(themeId: ThemeId) {
   themeStore.setTheme(themeId);
-}
-
-// 获取主题的预览颜色（页面背景色）
-function getThemePreviewColor(themeId: ThemeId): string {
-  const themeColors = {
-    light: '#f8f5f0',
-    dark: '#1f1f1f',
-  };
-  return themeColors[themeId];
 }
 
 function closeSettings() {
@@ -81,10 +73,10 @@ const handleImportConfigs = () => {
             :class="{ 'theme-capsule--active': themeStore.currentTheme === theme.id }"
             @click="selectTheme(theme.id)"
           >
-            <span
-              class="theme-color-circle"
-              :style="{ backgroundColor: getThemePreviewColor(theme.id) }"
-            ></span>
+            <span class="theme-color-icon">
+              <SunIcon v-if="theme.id === 'light'" :size="20" />
+              <MoonIcon v-else :size="20" />
+            </span>
             <span class="theme-name">{{ theme.name }}</span>
           </button>
         </div>
@@ -174,14 +166,18 @@ const handleImportConfigs = () => {
   }
 }
 
-.theme-color-circle {
-  position:      absolute;
-  left:          var(--space-2);
-  flex-shrink:   0;
-  width:         20px;
-  height:        20px;
-  border:        1px solid var(--theme-c-border);
-  border-radius: 50%;
+.theme-color-icon {
+  position:    absolute;
+  left:        var(--space-2);
+  flex-shrink: 0;
+  width:       20px;
+  height:      20px;
+  color:       var(--theme-c-text);
+
+  svg {
+    width:  100%;
+    height: 100%;
+  }
 }
 
 .switcher-with-label {

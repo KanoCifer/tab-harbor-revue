@@ -41,6 +41,10 @@ function scrollToGroup(domain: string) {
   const el = document.getElementById(`group-${domain}`);
   if (el) {
     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    el.classList.add('group-highlight');
+    setTimeout(() => {
+      el.classList.remove('group-highlight');
+    }, 2000);
   }
 }
 

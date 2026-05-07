@@ -40,3 +40,6 @@ __screenshots__/
 
 # Original
 tab-harbor/
+.claude/
+CLAUDE.md
+CLAUDE.local.md
