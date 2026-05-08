@@ -42,9 +42,13 @@ let highlightTimer: ReturnType<typeof setTimeout> | null = null;
 function scrollToGroup(domain: string) {
   const el = document.getElementById(`group-${domain}`);
   if (el) {
+    if (highlightTimer) {
+      el.classList.remove('group-highlight');
+      clearTimeout(highlightTimer);
+      highlightTimer = null;
+    }
     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     el.classList.add('group-highlight');
-    if (highlightTimer) clearTimeout(highlightTimer);
     highlightTimer = setTimeout(() => {
       el.classList.remove('group-highlight');
       highlightTimer = null;
@@ -158,9 +162,9 @@ function closeDrawer() {
   display:         flex;
   align-items:     center;
   justify-content: space-between;
-  height:          60px;
-  padding:         0 var(--space-16);
-  border-bottom:   1px solid var(--theme-c-border);
+  height:          64px;
+  padding:         0 var(--space-12);
+  border-bottom:   1px solid var(--md-sys-color-outline-variant);
   background:      var(--theme-c-page-bg);
 }
 
@@ -193,7 +197,7 @@ function closeDrawer() {
 }
 
 .group-nav-item:hover {
-  background: var(--theme-c-border);
+  background: var(--md-sys-color-surface-container-high);
   box-shadow: var(--shadow-sm);
 }
 
@@ -254,7 +258,7 @@ function closeDrawer() {
   }
 
   &:hover {
-    background: var(--theme-c-border);
+    background: var(--md-sys-color-surface-container-high);
     box-shadow: var(--shadow-sm);
   }
 }
@@ -272,6 +276,6 @@ function closeDrawer() {
   text-align:    center;
   color:         white;
   border-radius: 9px;
-  background:    var(--theme-c-accent);
+  background:    var(--theme-c-danger);
 }
 </style>
