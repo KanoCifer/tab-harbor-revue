@@ -150,8 +150,19 @@ export const useTabsStore = defineStore('tabs', () => {
       return
     }
     const index = tabs.value.findIndex(t => t.id === tabId)
-    if (index === -1) return
-    
+    if (index === -1) {
+      tabs.value.push({
+        id: tabId,
+        url: tab.url || '',
+        title: tab.title || 'Untitled',
+        windowId: tab.windowId,
+        active: tab.active || false,
+        favIconUrl: tab.favIconUrl || '',
+        isTabOut: false,
+      })
+      return
+    }
+
     tabs.value[index] = {
       ...tabs.value[index],
       url: tab.url || tabs.value[index].url,

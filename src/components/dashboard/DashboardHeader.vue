@@ -37,13 +37,11 @@ const greetingSub = computed(() => {
 function handleSearchSubmit(event: Event) {
   event.preventDefault();
   if (props.searchQuery.trim()) {
-    // 使用浏览器默认搜索引擎
-    const query = encodeURIComponent(props.searchQuery);
-    // 尝试使用 chrome.search API（如果是扩展环境）
+    // 用用户默认搜索引擎在新标签页打开
     if (typeof chrome !== 'undefined' && chrome.search) {
-      chrome.search.query({ text: props.searchQuery });
+      chrome.search.query({ text: props.searchQuery, disposition: 'NEW_TAB' });
     } else {
-      // 回退方案：在新标签页打开搜索结果
+      const query = encodeURIComponent(props.searchQuery);
       window.open(`https://www.google.com/search?q=${query}`, '_blank');
     }
     emit('update:searchQuery', '');
